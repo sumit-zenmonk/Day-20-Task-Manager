@@ -1,0 +1,112 @@
+.container {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 2%;
+    gap: 2%;
+}
+
+/* LEFT SECTION */
+.formSection {
+    width: 35%;
+    display: flex;
+    flex-direction: column;
+    gap: 5%;
+}
+
+.form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 8%;
+}
+
+.button {
+    width: 60%;
+    align-self: flex-start;
+}
+
+.error {
+    width: 100%;
+    color: red;
+}
+
+/* RIGHT SECTION */
+.listSection {
+    width: 63%;
+    display: flex;
+    flex-direction: column;
+    gap: 4%;
+}
+
+.title {
+    width: 100%;
+}
+
+/* TEAM LIST */
+.list {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4%;
+}
+
+.card {
+    width: 48%;
+    display: flex;
+    flex-direction: column;
+    gap: 8%;
+    padding: 4%;
+    border: 0.2% solid #ccc;
+    border-radius: 4%;
+}
+
+/* TEXT STYLING */
+.name {
+    width: 100%;
+    font-weight: 600;
+}
+
+.meta {
+    width: 100%;
+    color: gray;
+    font-size: 80%;
+}
+.modal{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.modalBox {
+    width: 40%;
+    height: auto;
+    max-height: 70%;
+    display: flex;
+    flex-direction: column;
+    gap: 5%;
+    padding: 1%;
+    background-color: white;
+    border-radius: 16px;
+    overflow: scroll;
+}
+
+.requestCard {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 6%;
+    padding: 4%;
+    border: 0.2% solid #ccc;
+    border-radius: 3%;
+}
+
+.requestActions {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    gap: 5%;
+}
