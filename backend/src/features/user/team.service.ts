@@ -4,13 +4,17 @@ import { TeamRepository } from "src/infrastructure/repository/team.repo";
 import { TeamJoinRequestCreateDto } from "./dto/create.team.join.dto";
 import { TeamRequestRepository } from "src/infrastructure/repository/team.request.repo";
 import { ProjectRepository } from "src/infrastructure/repository/project.repo";
+import { TaskUpdateStatusDto } from "./dto/task.update.dto";
+import { TaskRepository } from "src/infrastructure/repository/task.repo";
+import { TaskStatusEnum } from "src/domain/enums/task";
 
 @Injectable()
 export class UserService {
     constructor(
         private readonly teamRepo: TeamRepository,
         private readonly teamRequestRepo: TeamRequestRepository,
-        private readonly projectRepo: ProjectRepository
+        private readonly projectRepo: ProjectRepository,
+        private readonly taskRepo: TaskRepository
     ) { }
 
     async getTeams() {
@@ -57,6 +61,29 @@ export class UserService {
         return {
             data: UsersActiveTeams,
             message: "User's Project listing Success"
+        };
+    }
+
+    async getUserAllTasks(user: UserEntity) {
+        const UsersActiveTeams = await this.taskRepo.getUserAllTasks(user.uuid);
+
+        return {
+            data: UsersActiveTeams,
+            message: "User's Project Task listing Success"
+        };
+    }
+
+    async updateTaskStatus(body: TaskUpdateStatusDto, user: UserEntity) {
+        const isExists = await this.taskRepo.findTaskBYUUID(body.task_uuid);
+        if (!isExists) {
+            throw new BadRequestException("Task not found");
+        }
+        if (body.status == TaskStatusEnum.COMPLETED) {
+            throw new BadRequestException("Only Team Lead can make task complete");
+        }
+        await this.taskRepo.updateTaskStatus(body.task_uuid, body.status);
+        return {
+            message: "Project Task status updated Success"
         };
     }
 } 

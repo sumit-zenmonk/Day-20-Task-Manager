@@ -1,10 +1,11 @@
-import { Body, Controller, Delete, Get, Post, Req, UseGuards } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Patch, Post, Req, UseGuards } from "@nestjs/common";
 import type { Request } from "express";
 import { Roles } from "src/infrastructure/guard/role/role.decorator";
 import { RoleEnum } from "src/domain/enums/user";
 import { RolesGuard } from "src/infrastructure/guard/role/role.guard";
 import { UserService } from "./team.service";
 import { TeamJoinRequestCreateDto } from "./dto/create.team.join.dto";
+import { TaskUpdateStatusDto } from "./dto/task.update.dto";
 
 @UseGuards(RolesGuard)
 @Roles(RoleEnum.USER)
@@ -35,5 +36,15 @@ export class UserController {
     @Get('/team/project')
     async getUsersAssignedProjects(@Req() req: Request) {
         return await this.UserService.getUsersAssignedProjects(req.user);
+    }
+
+    @Get('/project/task')
+    async getUserAllTasks(@Req() req: Request) {
+        return await this.UserService.getUserAllTasks(req.user);
+    }
+
+    @Patch('/project/task')
+    async updateTaskStatus(@Body() body: TaskUpdateStatusDto, @Req() req: Request) {
+        return await this.UserService.updateTaskStatus(body, req.user);
     }
 }

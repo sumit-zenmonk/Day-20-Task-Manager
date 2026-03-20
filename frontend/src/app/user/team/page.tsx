@@ -6,6 +6,7 @@ import styles from "./team.module.css"
 import { RootState } from "@/redux/store"
 import { enqueueSnackbar } from "notistack"
 import {
+    getAllTasks,
     getJoinRequests,
     getTeams,
     getTeamsIn,
@@ -35,6 +36,7 @@ export default function TeamPage() {
         dispatch(getTeams())
         dispatch(getJoinRequests())
         dispatch(getTeamsIn())
+        dispatch(getAllTasks())
     }, [dispatch])
 
     const handleJoin = async (uuid: string) => {

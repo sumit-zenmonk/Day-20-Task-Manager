@@ -60,4 +60,11 @@ export class TaskRepository extends Repository<TaskEntity> {
         });
     }
 
+    async getUserAllTasks(user_uuid: string) {
+        return await this.find({
+            where: {
+                assigned_to: user_uuid
+            }
+        });
+    }
 } 

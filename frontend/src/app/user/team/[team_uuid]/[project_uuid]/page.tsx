@@ -5,18 +5,29 @@ import { Box, Typography, MenuItem, TextField } from "@mui/material"
 import { useParams } from "next/navigation"
 import { RootState } from "@/redux/store"
 import { useAppSelector, useAppDispatch } from "@/redux/hooks.ts"
+import { enqueueSnackbar } from "notistack"
+import { updateTaskStatus } from "@/redux/feature/user/userAction"
 
 export default function AssignedTasksPage() {
     const dispatch = useAppDispatch()
     const { project_uuid } = useParams()
-    const { projects } = useAppSelector((state: RootState) => state.UserReducer)
+
+    const { tasks } = useAppSelector((state: RootState) => state.UserReducer)
     const { user } = useAppSelector((state: RootState) => state.authReducer)
 
-    const project = projects.find((p: any) => p.uuid === project_uuid)
-    const myTasks = project?.tasks?.filter((task: any) => task.assigned_to === user?.uid) || [];
+    const myTasks =
+        tasks?.filter(
+            (task: any) =>
+                task.project_uuid === project_uuid &&
+                task.assigned_to === user?.uid
+        ) || []
 
-    const handleStatusChange = (taskId: string, newStatus: string) => {
-        console.log(taskId, newStatus)
+    const handleStatusChange = async (task_uuid: string, status: string) => {
+        try {
+            await dispatch(updateTaskStatus({ task_uuid, status })).unwrap();
+        } catch (error) {
+            enqueueSnackbar("Some Error Occured", { variant: "error" })
+        }
     }
 
     return (
