@@ -8,6 +8,7 @@ import { TeamMemberEntity } from "src/domain/entities/team.member.entity";
 import { ProjectEntity } from "src/domain/entities/project.entity";
 import { TaskEntity } from "src/domain/entities/task.entity";
 import { TeamRequestEntity } from "src/domain/entities/team.request.entity";
+import { TaskCommentsEntity } from "src/domain/entities/task.comment.entity";
 
 const options: DataSourceOptions = {
     type: 'postgres',
@@ -16,7 +17,7 @@ const options: DataSourceOptions = {
     username: "postgres",
     password: "123", //sumit123
     database: "taskmanager",
-    entities: [UserEntity, TeamEntity, TeamMemberEntity, ProjectEntity, TaskEntity, TeamRequestEntity],
+    entities: [UserEntity, TeamEntity, TeamMemberEntity, ProjectEntity, TaskEntity, TeamRequestEntity, TaskCommentsEntity],
     synchronize: false,
     migrations: ['dist/infrastructure/database/migrations/*{.ts,.js}'],
 };

@@ -6,6 +6,7 @@ import storage from "redux-persist/lib/storage";
 import authReducer from "../feature/Auth/authSlice";
 import teamLeadReducer from "../feature/teamlead/teamLeadSlice";
 import UserReducer from "../feature/user/userSlice";
+import commentReducer from "../feature/comment/commentSlice";
 
 const persistConfig = {
     key: "root",
@@ -15,7 +16,8 @@ const persistConfig = {
 const appReducer = combineReducers({
     authReducer: authReducer,
     teamLeadReducer: teamLeadReducer,
-    UserReducer: UserReducer
+    UserReducer: UserReducer,
+    commentReducer: commentReducer
 });
 
 const rootReducer = (state: any, action: any) => {

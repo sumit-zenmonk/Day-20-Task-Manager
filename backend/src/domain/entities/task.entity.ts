@@ -1,7 +1,8 @@
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { TaskStatusEnum } from "../enums/task";
 import { ProjectEntity } from "./project.entity";
 import { UserEntity } from "./user.entity";
+import { TaskCommentsEntity } from "./task.comment.entity";
 
 @Entity('tasks')
 export class TaskEntity {
@@ -34,6 +35,9 @@ export class TaskEntity {
     @ManyToOne(() => UserEntity, (user) => user.assigned_tasks)
     @JoinColumn({ name: 'assigned_to' })
     assignee: UserEntity;
+
+    @OneToMany(() => TaskCommentsEntity, (tc) => tc.task)
+    comments: TaskCommentsEntity[];
 
     @CreateDateColumn()
     created_at: Date;

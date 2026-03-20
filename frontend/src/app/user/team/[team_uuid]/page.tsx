@@ -73,9 +73,3 @@ export default function TeamDetailsPage() {
         </Box>
     )
 }
-//  i want show projects to user at this page only nicely on every project it should show a button to view tasks and which redirect to http://localhost:3000/user/team/1b42eaf7-4fa2-4977-8f45-c97edce80929/8dc25874-42ca-4b4d-9d15-303d84234f0c  as  
-//   onClick={() =>
-//     router.push(
-//         `/lead/team/${team_uuid}/${proj.uuid}`
-//     )
-// }

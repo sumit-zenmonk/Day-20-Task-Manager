@@ -3,6 +3,7 @@ import { Column, CreateDateColumn, DeleteDateColumn, Entity, OneToMany, PrimaryG
 import { TeamRequestEntity } from "./team.request.entity";
 import { TeamMemberEntity } from "./team.member.entity";
 import { TaskEntity } from "./task.entity";
+import { TaskCommentsEntity } from "./task.comment.entity";
 
 @Entity('users')
 export class UserEntity {
@@ -33,6 +34,9 @@ export class UserEntity {
 
     @OneToMany(() => TaskEntity, (task) => task.assignee)
     assigned_tasks: TaskEntity[];
+
+    @OneToMany(() => TaskCommentsEntity, (comment) => comment.comment_user)
+    comment_user: TaskCommentsEntity[];
 
     @CreateDateColumn()
     created_at: Date;

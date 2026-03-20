@@ -3,7 +3,7 @@
 import { useEffect } from "react"
 import { Box, TextField, Button, Typography, MenuItem } from "@mui/material"
 import styles from "./task.module.css"
-import { useParams } from "next/navigation"
+import { useParams, useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { taskSchema, TaskSchemaType } from "@/types/taskCreate"
@@ -22,6 +22,7 @@ export default function TaskPage() {
     const params = useParams()
     const project_uuid = params?.project_uuid as string
     const team_uuid = params?.team_uuid as string
+    const router = useRouter();
 
     const { error, members, tasks } = useAppSelector((state: RootState) => state.teamLeadReducer)
     const {
@@ -156,6 +157,10 @@ export default function TaskPage() {
                                             {task.task_status}
                                         </Typography>
                                     </Box>
+
+                                    <Button onClick={() => router.push(`/task/comment/${task.uuid}`)}>
+                                        Comment Section
+                                    </Button>
 
                                     <TextField
                                         select

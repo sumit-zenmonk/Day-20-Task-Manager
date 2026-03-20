@@ -12,6 +12,7 @@ import { AuthModule } from './features/Auth/auth.module';
 import { AuthHelperService } from './infrastructure/services/auth.service';
 import { UserModule } from './features/user/team.module';
 import { LeadModule } from './features/lead/lead.module';
+import { CommentModule } from './features/comment/task/comment.module';
 
 @Module({
   imports: [
@@ -35,6 +36,7 @@ import { LeadModule } from './features/lead/lead.module';
     AuthModule,
     LeadModule,
     UserModule,
+    CommentModule
   ],
   controllers: [AppController],
   providers: [AppService, BcryptService, UserRepository, AuthHelperService],

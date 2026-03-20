@@ -1,8 +1,8 @@
 "use client"
 
 import React from "react"
-import { Box, Typography, MenuItem, TextField } from "@mui/material"
-import { useParams } from "next/navigation"
+import { Box, Typography, MenuItem, TextField, Button } from "@mui/material"
+import { useParams, useRouter } from "next/navigation"
 import { RootState } from "@/redux/store"
 import { useAppSelector, useAppDispatch } from "@/redux/hooks.ts"
 import { enqueueSnackbar } from "notistack"
@@ -11,7 +11,7 @@ import { updateTaskStatus } from "@/redux/feature/user/userAction"
 export default function AssignedTasksPage() {
     const dispatch = useAppDispatch()
     const { project_uuid } = useParams()
-
+    const router = useRouter();
     const { tasks } = useAppSelector((state: RootState) => state.UserReducer)
     const { user } = useAppSelector((state: RootState) => state.authReducer)
 
@@ -67,24 +67,29 @@ export default function AssignedTasksPage() {
                                 {new Date(task.deadline).toLocaleString()}
                             </Typography>
 
-                            <TextField
-                                select
-                                value={task.task_status}
-                                onChange={(e) =>
-                                    handleStatusChange(
-                                        task.uuid,
-                                        e.target.value
-                                    )
-                                }
-                                sx={{ width: "50%" }}
-                            >
-                                <MenuItem value="pending">
-                                    Pending
-                                </MenuItem>
-                                <MenuItem value="in_progress">
-                                    In Progress
-                                </MenuItem>
-                            </TextField>
+                            <Box>
+                                <TextField
+                                    select
+                                    value={task.task_status}
+                                    onChange={(e) =>
+                                        handleStatusChange(
+                                            task.uuid,
+                                            e.target.value
+                                        )
+                                    }
+                                >
+                                    <MenuItem value="pending">
+                                        Pending
+                                    </MenuItem>
+                                    <MenuItem value="in_progress">
+                                        In Progress
+                                    </MenuItem>
+                                </TextField>
+
+                                <Button onClick={() => router.push(`/task/comment/${task.uuid}`)}>
+                                    Comment Section
+                                </Button>
+                            </Box>
                         </Box>
                     ))
                 ) : (
