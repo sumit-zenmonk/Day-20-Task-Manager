@@ -57,13 +57,13 @@ export class TeamRequestRepository extends Repository<TeamRequestEntity> {
         })
     }
 
-    async changeJoinRequestStatus(body: TeamRequestStatusChangeDto) {
+    async changeJoinRequestStatus(uuid: string) {
         return await this.update(
             {
-                uuid: body.uuid,
+                uuid: uuid,
             },
             {
-                is_active: body.status
+                is_active: false
             }
         )
     }

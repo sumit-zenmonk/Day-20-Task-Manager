@@ -11,6 +11,7 @@ import { enqueueSnackbar } from "notistack"
 import { createTeamSchema, CreateTeamSchemaType } from "@/types/teamCreate"
 import { useAppDispatch, useAppSelector } from "@/redux/hooks.ts"
 import { JoinRequests } from "@/redux/feature/teamlead/teamLeadType"
+import { useRouter } from "next/navigation"
 
 export default function TeamPage() {
     const dispatch = useAppDispatch()
@@ -18,6 +19,7 @@ export default function TeamPage() {
         (state: RootState) => state.teamLeadReducer
     );
     const [openModal, setOpenModal] = React.useState(false)
+    const router = useRouter();
 
     const handleOpenRequests = () => {
         setOpenModal(true)
@@ -123,6 +125,13 @@ export default function TeamPage() {
                                 <Typography className={styles.meta}>
                                     {new Date(team.created_at).toLocaleString()}
                                 </Typography>
+
+                                <Button
+                                    onClick={() => router.push(`/lead/team/${team.uuid}`)}
+                                >
+                                    View Team
+                                </Button>
+
                                 <Button
                                     color="error"
                                     onClick={() => handleDelete(team.uuid)}

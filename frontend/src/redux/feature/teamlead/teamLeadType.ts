@@ -15,6 +15,7 @@ export interface Project {
     project_name: string
     project_deadline: string
     team_uuid: string
+    tasks?: Task[]
 }
 
 export interface JoinRequests {

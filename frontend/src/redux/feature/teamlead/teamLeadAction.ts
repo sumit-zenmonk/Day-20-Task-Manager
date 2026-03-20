@@ -147,3 +147,62 @@ export const handleJoinRequest = createAsyncThunk<
         }
     }
 )
+
+export const createProject = createAsyncThunk<
+    any,
+    { project_name: string; project_deadline: string; team_uuid: string },
+    { state: RootState }
+>(
+    "teamlead/createProject",
+    async (data, { getState, rejectWithValue }) => {
+        try {
+            const token = getState().authReducer.token || ""
+
+            const res = await fetch(`${API_URL}/lead/project`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: token
+                },
+                body: JSON.stringify(data)
+            })
+
+            const result = await res.json()
+            if (!res.ok) throw new Error(result.message)
+
+            return result.data
+        } catch (err: any) {
+            return rejectWithValue(err.message)
+        }
+    }
+)
+
+export const getProjectsByTeam = createAsyncThunk<
+    any,
+    string,
+    { state: RootState }
+>(
+    "teamlead/getProjectsByTeam",
+    async (team_uuid, { getState, rejectWithValue }) => {
+        try {
+            const token = getState().authReducer.token || ""
+
+            const res = await fetch(
+                `${API_URL}/lead/project?team_uuid=${team_uuid}`,
+                {
+                    method: "GET",
+                    headers: {
+                        Authorization: token
+                    }
+                }
+            )
+
+            const result = await res.json()
+            if (!res.ok) throw new Error(result.message)
+            console.log('getProjectsByTeam result ->', result);
+            return result
+        } catch (err: any) {
+            return rejectWithValue(err.message)
+        }
+    }
+)

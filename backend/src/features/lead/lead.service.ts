@@ -7,6 +7,8 @@ import { TeamRequestRepository } from "src/infrastructure/repository/team.reques
 import { TeamRequestStatusChangeDto } from "./dto/team.request.change.dto";
 import { TeamMemberRepository } from "src/infrastructure/repository/team.member.repo";
 import { UserRepository } from "src/infrastructure/repository/user.repo";
+import { ProjectCreateDto } from "./dto/project.create.dto";
+import { ProjectRepository } from "src/infrastructure/repository/project.repo";
 
 @Injectable()
 export class LeadService {
@@ -15,6 +17,7 @@ export class LeadService {
         private readonly teamRequestRepo: TeamRequestRepository,
         private readonly teamMemberRepo: TeamMemberRepository,
         private readonly userRepo: UserRepository,
+        private readonly projectRepo: ProjectRepository,
     ) { }
 
     async CreateTeam(body: TeamCreateDto, user: UserEntity) {
@@ -75,10 +78,29 @@ export class LeadService {
             await this.teamMemberRepo.createTeamMember(request.user_uuid, request.team_uuid);
         }
 
-        await this.teamRequestRepo.changeJoinRequestStatus(body);
+        await this.teamRequestRepo.changeJoinRequestStatus(body.uuid);
 
         return {
             message: "Status changed successfully"
         };
+    }
+
+    async CreateProject(body: ProjectCreateDto, user: UserEntity) {
+        const isExistsWithSameName = await this.projectRepo.findbyName(body.project_name, body.team_uuid);
+        if (isExistsWithSameName) {
+            throw new BadRequestException("Project with same name exists");
+        }
+
+        const data = await this.projectRepo.createProject(body.project_name, body.project_deadline, body.team_uuid);
+
+        return {
+            data,
+            message: "Team Project Created Success"
+        };
+    }
+
+
+    async getProjects(team_uuid: string, user: UserEntity) {
+        return await this.projectRepo.getTeamsProjects(team_uuid);
     }
 } 

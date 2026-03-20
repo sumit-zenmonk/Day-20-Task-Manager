@@ -3,9 +3,11 @@
 import { createSlice } from "@reduxjs/toolkit"
 import { TeamLeadState } from "./teamLeadType"
 import {
+    createProject,
     createTeam,
     deleteTeam,
     getJoinRequests,
+    getProjectsByTeam,
     getTeams,
     handleJoinRequest
 } from "./teamLeadAction"
@@ -71,6 +73,22 @@ const teamLeadSlice = createSlice({
                 state.JoinRequests = state.JoinRequests.filter(
                     (req) => req.uuid !== action.payload
                 )
+            })
+            .addCase(createProject.fulfilled, (state, action) => {
+                state.projects.push(action.payload)
+                state.error = null
+            })
+            .addCase(createProject.rejected, (state, action) => {
+                state.loading = false
+                state.error = action.payload as string
+            })
+            .addCase(getProjectsByTeam.fulfilled, (state, action) => {
+                state.projects = action.payload
+                state.error = null
+            })
+            .addCase(getProjectsByTeam.rejected, (state, action) => {
+                state.loading = false
+                state.error = action.payload as string
             })
     }
 })
