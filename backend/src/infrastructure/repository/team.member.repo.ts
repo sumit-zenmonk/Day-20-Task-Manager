@@ -23,4 +23,22 @@ export class TeamMemberRepository extends Repository<TeamMemberEntity> {
             where: { user_uuid, team_uuid }
         });
     }
+
+    async findTeamMembers(team_uuid: string) {
+        return await this.find({
+            where: { team_uuid },
+            relations: { user: true },
+            select: {
+                uuid: true,
+                team_uuid: true,
+                user: {
+                    uuid: true,
+                    username: true,
+                    email: true,
+                    role: true,
+                },
+                created_at: true,
+            }
+        });
+    }
 } 

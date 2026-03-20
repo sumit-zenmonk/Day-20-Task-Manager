@@ -3,13 +3,14 @@ import { UserEntity } from "src/domain/entities/user.entity";
 import { TeamRepository } from "src/infrastructure/repository/team.repo";
 import { TeamJoinRequestCreateDto } from "./dto/create.team.join.dto";
 import { TeamRequestRepository } from "src/infrastructure/repository/team.request.repo";
+import { ProjectRepository } from "src/infrastructure/repository/project.repo";
 
 @Injectable()
 export class UserService {
     constructor(
         private readonly teamRepo: TeamRepository,
         private readonly teamRequestRepo: TeamRequestRepository,
-
+        private readonly projectRepo: ProjectRepository
     ) { }
 
     async getTeams() {
@@ -47,6 +48,15 @@ export class UserService {
         return {
             data: UsersActiveTeams,
             message: "User's Team listing Success"
+        };
+    }
+
+    async getUsersAssignedProjects(user: UserEntity) {
+        const UsersActiveTeams = await this.projectRepo.getUsersAssignedProjects(user.uuid);
+
+        return {
+            data: UsersActiveTeams,
+            message: "User's Project listing Success"
         };
     }
 } 

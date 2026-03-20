@@ -4,9 +4,11 @@ import { createSlice } from "@reduxjs/toolkit"
 import { TeamLeadState } from "./teamLeadType"
 import {
     createProject,
+    createTask,
     createTeam,
     deleteTeam,
     getJoinRequests,
+    getMembersByTeam,
     getProjectsByTeam,
     getTeams,
     handleJoinRequest
@@ -57,6 +59,7 @@ const teamLeadSlice = createSlice({
                 state.teams = state.teams.filter(
                     (team: any) => team.uuid !== action.payload
                 )
+                state.error=null
             })
             .addCase(getJoinRequests.pending, (state) => {
                 state.loading = true
@@ -64,6 +67,7 @@ const teamLeadSlice = createSlice({
             .addCase(getJoinRequests.fulfilled, (state, action) => {
                 state.loading = false
                 state.JoinRequests = action.payload
+                state.error=null
             })
             .addCase(getJoinRequests.rejected, (state, action) => {
                 state.loading = false
@@ -73,6 +77,7 @@ const teamLeadSlice = createSlice({
                 state.JoinRequests = state.JoinRequests.filter(
                     (req) => req.uuid !== action.payload
                 )
+                state.error=null;
             })
             .addCase(createProject.fulfilled, (state, action) => {
                 state.projects.push(action.payload)
@@ -88,6 +93,21 @@ const teamLeadSlice = createSlice({
             })
             .addCase(getProjectsByTeam.rejected, (state, action) => {
                 state.loading = false
+                state.error = action.payload as string
+            })
+            .addCase(getMembersByTeam.fulfilled, (state, action) => {
+                state.members = action.payload
+                state.error = null
+            })
+            .addCase(getMembersByTeam.rejected, (state, action) => {
+                state.loading = false
+                state.error = action.payload as string
+            })
+            .addCase(createTask.fulfilled, (state, action) => {
+                state.tasks.push(action.payload)
+                state.error = null
+            })
+            .addCase(createTask.rejected, (state, action) => {
                 state.error = action.payload as string
             })
     }

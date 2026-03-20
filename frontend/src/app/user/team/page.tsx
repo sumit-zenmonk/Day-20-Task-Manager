@@ -12,12 +12,14 @@ import {
     joinTeam
 } from "@/redux/feature/user/userAction"
 import { useAppDispatch, useAppSelector } from "@/redux/hooks.ts"
+import { useRouter } from "next/navigation"
 
 export default function TeamPage() {
     const dispatch = useAppDispatch()
     const { teams, teamsIn, joinRequests, loading } = useAppSelector(
         (state: RootState) => state.UserReducer
     )
+    const router = useRouter();
 
     const isRequested = (teamUuid: string) => {
         return joinRequests.some(
@@ -66,8 +68,8 @@ export default function TeamPage() {
                                     {new Date(team.created_at).toLocaleString()}
                                 </Typography>
 
-                                <Button variant="contained" disabled>
-                                    Joined
+                                <Button onClick={() => router.push(`/user/team/${team.uuid}`)}>
+                                    View Team
                                 </Button>
                             </Box>
                         ))

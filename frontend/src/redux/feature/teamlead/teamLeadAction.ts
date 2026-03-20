@@ -199,8 +199,72 @@ export const getProjectsByTeam = createAsyncThunk<
 
             const result = await res.json()
             if (!res.ok) throw new Error(result.message)
-            console.log('getProjectsByTeam result ->', result);
+
             return result
+        } catch (err: any) {
+            return rejectWithValue(err.message)
+        }
+    }
+)
+
+export const getMembersByTeam = createAsyncThunk<
+    any,
+    void,
+    { state: RootState }
+>(
+    "teamlead/getMembersByTeam",
+    async (team_uuid, { getState, rejectWithValue }) => {
+        try {
+            const token = getState().authReducer.token || ""
+
+            const res = await fetch(
+                `${API_URL}/lead/members`,
+                {
+                    method: "GET",
+                    headers: {
+                        Authorization: token
+                    }
+                }
+            )
+
+            const result = await res.json()
+            if (!res.ok) throw new Error(result.message)
+
+            return result
+        } catch (err: any) {
+            return rejectWithValue(err.message)
+        }
+    }
+)
+
+export const createTask = createAsyncThunk<
+    any,
+    {
+        task_name: string
+        project_uuid: string
+        assigned_to: string
+        deadline: string
+    },
+    { state: RootState }
+>(
+    "teamlead/createTask",
+    async (data, { getState, rejectWithValue }) => {
+        try {
+            const token = getState().authReducer.token || ""
+
+            const res = await fetch(`${API_URL}/lead/task`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: token
+                },
+                body: JSON.stringify(data)
+            })
+
+            const result = await res.json()
+            if (!res.ok) throw new Error(result.message)
+
+            return result.data
         } catch (err: any) {
             return rejectWithValue(err.message)
         }

@@ -1,0 +1,132 @@
+.container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 2%;
+    overflow: scroll;
+    padding-bottom: 10%;
+}
+
+.headersection {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 2%;
+    border: 1px solid #ddd;
+    border-radius: 1%;
+    gap: 2%;
+}
+
+.Listsection {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    flex: 1;
+    padding: 2%;
+    border: 1px solid #ddd;
+    border-radius: 1%;
+    gap: 2%;
+}
+
+.sectionHeader {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 2%;
+}
+
+.list {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 2%;
+    flex: 1;
+}
+
+.fullCard {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 2%;
+    border: 1px solid #ccc;
+    border-radius: 1%;
+    gap: 2%;
+}
+
+.projectHeader {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.meta {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.memberSection {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 1%;
+}
+
+.memberRow {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    padding: 1%;
+    border: 1px solid #eee;
+    border-radius: 1%;
+}
+
+.taskSection {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 2%;
+}
+
+.taskList {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 1%;
+}
+
+.taskRow {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1%;
+    border: 1px solid #eee;
+    border-radius: 1%;
+}
+
+.taskLeft {
+    display: flex;
+    width: 70%;
+}
+
+.taskRight {
+    display: flex;
+    width: 30%;
+    justify-content: flex-end;
+}
+
+.empty {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+}

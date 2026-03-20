@@ -8,6 +8,10 @@ export interface Member {
     uuid: string
     team_uuid: string
     user_uuid: string
+    user: {
+        username: string
+        email: string
+    }
 }
 
 export interface Project {

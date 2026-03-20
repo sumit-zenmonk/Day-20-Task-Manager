@@ -1,0 +1,57 @@
+.container {
+    width: 100%;
+    padding: 2%;
+    display: flex;
+    flex-direction: column;
+}
+
+.title {
+    width: 100%;
+    margin-bottom: 2%;
+    font-weight: 600;
+}
+
+.list {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 2%;
+}
+
+.card {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2%;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
+
+.info {
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+    gap: 10%;
+}
+
+.taskName {
+    width: 100%;
+    font-weight: 500;
+}
+
+.deadline {
+    width: 100%;
+    font-size: 90%;
+    color: gray;
+}
+
+.select {
+    width: 25%;
+}
+
+.empty {
+    width: 100%;
+    text-align: center;
+    margin-top: 5%;
+}

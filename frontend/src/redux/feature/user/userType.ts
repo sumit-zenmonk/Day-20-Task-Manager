@@ -14,7 +14,18 @@ export interface Project {
     uuid: string
     project_name: string
     project_deadline: string
-    team_uuid: string
+    team: {
+        team_name: string
+        uuid: string
+        members: Member[]
+    }
+    tasks: {
+        uuid: string
+        task_name: string
+        task_status: TaskStatus
+        deadline: string
+        assigned_to: string
+    }[]
 }
 
 export interface JoinRequest {

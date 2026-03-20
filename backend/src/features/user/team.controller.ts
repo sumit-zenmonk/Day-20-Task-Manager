@@ -31,4 +31,9 @@ export class UserController {
     async getTeamJoinRequest(@Req() req: Request) {
         return await this.UserService.getTeamJoinRequest(req.user);
     }
+
+    @Get('/team/project')
+    async getUsersAssignedProjects(@Req() req: Request) {
+        return await this.UserService.getUsersAssignedProjects(req.user);
+    }
 }

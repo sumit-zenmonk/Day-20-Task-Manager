@@ -114,3 +114,29 @@ export const getTeamsIn = createAsyncThunk<
         }
     }
 )
+
+export const getProjects = createAsyncThunk<
+    any,
+    void,
+    { state: RootState }
+>(
+    "user/getProjects",
+    async (_, { getState, rejectWithValue }) => {
+        try {
+            const token = getState().authReducer.token || ""
+
+            const res = await fetch(`${API_URL}/user/team/project`, {
+                headers: {
+                    Authorization: token
+                }
+            })
+
+            const result = await res.json()
+            if (!res.ok) throw new Error(result.message)
+
+            return result
+        } catch (err: any) {
+            return rejectWithValue(err.message)
+        }
+    }
+)

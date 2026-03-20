@@ -1,0 +1,94 @@
+.container {
+    width: 100%;
+    min-height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f4f6f8;
+}
+
+.formSection {
+    width: 40%;
+    min-height: 70%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    background-color: #ffffff;
+    border-radius: 2%;
+    padding: 5%;
+    gap: 4%;
+}
+
+.title {
+    width: 100%;
+    text-align: center;
+    font-size: 160%;
+    font-weight: 600;
+}
+
+.form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 6%;
+}
+
+.button {
+    width: 100%;
+    height: 10%;
+}
+
+.error {
+    width: 100%;
+    text-align: center;
+    color: red;
+    font-size: 90%;
+}
+
+/* TASK SECTION */
+
+.taskSection {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 4%;
+}
+
+.taskTitle {
+    width: 100%;
+    font-size: 120%;
+    font-weight: 600;
+    text-align: center;
+}
+
+.taskCard {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 3%;
+    border: 1px solid #ddd;
+    border-radius: 2%;
+}
+
+.taskInfo {
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    gap: 10%;
+}
+
+.taskName {
+    font-size: 100%;
+    font-weight: 600;
+}
+
+.taskStatus {
+    font-size: 80%;
+    color: gray;
+}
+
+.statusSelect {
+    width: 35%;
+}

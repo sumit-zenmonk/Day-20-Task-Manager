@@ -6,11 +6,12 @@ import { TeamRequestRepository } from "src/infrastructure/repository/team.reques
 import { TeamMemberRepository } from "src/infrastructure/repository/team.member.repo";
 import { UserRepository } from "src/infrastructure/repository/user.repo";
 import { ProjectRepository } from "src/infrastructure/repository/project.repo";
+import { TaskRepository } from "src/infrastructure/repository/task.repo";
 
 @Module({
     imports: [],
     controllers: [LeadController],
-    providers: [LeadService, TeamRepository, TeamRequestRepository, TeamMemberRepository, UserRepository, ProjectRepository],
+    providers: [LeadService, TeamRepository, TeamRequestRepository, TeamMemberRepository, UserRepository, ProjectRepository, TaskRepository],
     exports: [LeadModule],
 })
 

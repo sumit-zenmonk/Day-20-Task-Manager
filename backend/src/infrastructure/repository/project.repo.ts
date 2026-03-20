@@ -32,7 +32,39 @@ export class ProjectRepository extends Repository<ProjectEntity> {
             }
             , relations: {
                 tasks: true,
-                team:true
+                team: true
+            }
+        });
+    }
+
+    async getUsersAssignedProjects(user_uuid: string) {
+        return await this.find({
+            where: {
+                team: {
+                    members: {
+                        user_uuid
+                    }
+                }
+            },
+            select: {
+                uuid: true,
+                project_name: true,
+                project_deadline: true,
+                team: {
+                    uuid: true,
+                    team_name: true,
+                },
+                tasks: {
+                    uuid: true,
+                    task_name: true,
+                    task_status: true,
+                    deadline: true,
+                    assigned_to: true,
+                }
+            },
+            relations: {
+                tasks: true,
+                team: true
             }
         });
     }

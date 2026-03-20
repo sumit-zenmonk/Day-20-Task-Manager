@@ -26,20 +26,13 @@ export default function Home() {
   return (
     <Box className={styles.container}>
       <Card className={styles.cardWrapper} elevation={3}>
-        <>
-          {user?.name}
-          {user?.role}
-          {
-            user?.role == RoleEnum.TEAM_LEAD &&
-            <Button
-              variant="contained"
-              className={styles.logoutBtn}
-              onClick={() => router.push('/lead/team')}
-            >
-              Go to team
-            </Button>
-          }
-        </>
+        <Button
+          variant="contained"
+          className={styles.logoutBtn}
+          onClick={() => router.push(`/${user?.role == RoleEnum.TEAM_LEAD ? "lead" : "user"}/team`)}
+        >
+          Go to team
+        </Button>
       </Card>
     </Box>
   )

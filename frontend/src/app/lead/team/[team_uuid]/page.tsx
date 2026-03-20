@@ -13,6 +13,7 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { projectSchema, ProjectSchemaType } from "@/types/projectCreate"
 import { useAppDispatch, useAppSelector } from "@/redux/hooks.ts"
+import { useRouter } from "next/navigation"
 
 export default function TeamDetailsPage() {
     const { team_uuid } = useParams()
@@ -20,6 +21,7 @@ export default function TeamDetailsPage() {
     const { projects, error } = useAppSelector(
         (state: RootState) => state.teamLeadReducer
     )
+    const router = useRouter()
 
     const {
         register,
@@ -87,8 +89,16 @@ export default function TeamDetailsPage() {
                 <Box className={styles.list}>
                     {Array.isArray(projects) && projects.length > 0 ? (
                         projects.map((proj: any) => (
-                            <Box key={proj.uuid} className={styles.fullCard}>
-
+                            <Box
+                                key={proj.uuid}
+                                className={styles.fullCard}
+                                onClick={() =>
+                                    router.push(
+                                        `/lead/team/${team_uuid}/${proj.uuid}`
+                                    )
+                                }
+                                sx={{ cursor: "pointer" }}
+                            >
                                 <Box className={styles.projectHeader}>
                                     <Typography variant="h6">
                                         {proj.project_name}
@@ -99,57 +109,6 @@ export default function TeamDetailsPage() {
                                     <Typography variant="body2">
                                         {new Date(proj.project_deadline).toLocaleString()}
                                     </Typography>
-                                </Box>
-
-                                <Box className={styles.memberSection}>
-                                    <Typography variant="subtitle1">
-                                        Members
-                                    </Typography>
-
-                                    {Array.isArray(proj.team?.members) && proj.team.members.length > 0 ? (
-                                        proj.team.members.map((m: any) => (
-                                            <Box key={m.uuid} className={styles.memberRow}>
-                                                <Typography>{m.user?.username || "User"}</Typography>
-                                                <Typography variant="body2">
-                                                    {m.user?.email}
-                                                </Typography>
-                                            </Box>
-                                        ))
-                                    ) : (
-                                        <Typography className={styles.empty}>
-                                            No members
-                                        </Typography>
-                                    )}
-                                </Box>
-
-                                <Box className={styles.taskSection}>
-                                    <Typography variant="subtitle1">
-                                        Tasks
-                                    </Typography>
-
-                                    <Box className={styles.taskList}>
-                                        {Array.isArray(proj.tasks) && proj.tasks.length > 0 ? (
-                                            proj.tasks.map((task: any) => (
-                                                <Box key={task.uuid} className={styles.taskRow}>
-                                                    <Box className={styles.taskLeft}>
-                                                        <Typography>
-                                                            {task.task_name}
-                                                        </Typography>
-                                                    </Box>
-
-                                                    <Box className={styles.taskRight}>
-                                                        <Typography>
-                                                            {task.task_status}
-                                                        </Typography>
-                                                    </Box>
-                                                </Box>
-                                            ))
-                                        ) : (
-                                            <Typography className={styles.empty}>
-                                                No tasks
-                                            </Typography>
-                                        )}
-                                    </Box>
                                 </Box>
 
                             </Box>

@@ -66,29 +66,29 @@ export default function HeaderComp() {
                     </MenuItem>
 
                     {user?.role === RoleEnum.USER && (
-                        <>
-                            <MenuItem
-                                onClick={() => {
-                                    router.push("/user/team")
-                                    handleMenuClose()
-                                }}
-                            >
-                                My Teams
-                            </MenuItem>
-                        </>
+                        // <>
+                        <MenuItem
+                            onClick={() => {
+                                router.push("/user/team")
+                                handleMenuClose()
+                            }}
+                        >
+                            My Teams
+                        </MenuItem>
+                        //  </> 
                     )}
 
                     {user?.role === RoleEnum.TEAM_LEAD && (
-                        <>
-                            <MenuItem
-                                onClick={() => {
-                                    router.push("/lead/team")
-                                    handleMenuClose()
-                                }}
-                            >
-                                Manage Teams
-                            </MenuItem>
-                        </>
+                        // <>
+                        <MenuItem
+                            onClick={() => {
+                                router.push("/lead/team")
+                                handleMenuClose()
+                            }}
+                        >
+                            Manage Teams
+                        </MenuItem>
+                        // </>
                     )}
 
                     {user ? (

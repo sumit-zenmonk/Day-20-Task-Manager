@@ -4,6 +4,7 @@ import { createSlice } from "@reduxjs/toolkit"
 import { UserState } from "./userType"
 import {
     getJoinRequests,
+    getProjects,
     getTeams,
     getTeamsIn,
     joinTeam
@@ -59,6 +60,18 @@ const userSlice = createSlice({
                 state.teamsIn = action.payload.data
             })
             .addCase(getTeamsIn.rejected, (state, action) => {
+                state.loading = false
+                state.error = action.payload as string
+            })
+            .addCase(getProjects.pending, (state) => {
+                state.loading = true
+            })
+            .addCase(getProjects.fulfilled, (state, action) => {
+                state.loading = false
+                state.projects = action.payload.data
+                state.error = null
+            })
+            .addCase(getProjects.rejected, (state, action) => {
                 state.loading = false
                 state.error = action.payload as string
             })

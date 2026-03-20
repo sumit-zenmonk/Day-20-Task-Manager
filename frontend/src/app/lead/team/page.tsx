@@ -1,10 +1,10 @@
 "use client"
 
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
 import { Box, TextField, Button, Typography, Modal } from "@mui/material"
 import styles from "./team.module.css"
 import { RootState } from "@/redux/store"
-import { createTeam, deleteTeam, getJoinRequests, getTeams, handleJoinRequest } from "@/redux/feature/teamlead/teamLeadAction"
+import { createTeam, deleteTeam, getJoinRequests, getMembersByTeam, getTeams, handleJoinRequest } from "@/redux/feature/teamlead/teamLeadAction"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { enqueueSnackbar } from "notistack"
@@ -15,14 +15,14 @@ import { useRouter } from "next/navigation"
 
 export default function TeamPage() {
     const dispatch = useAppDispatch()
-    const { teams, loading, error, JoinRequests } = useAppSelector(
-        (state: RootState) => state.teamLeadReducer
-    );
-    const [openModal, setOpenModal] = React.useState(false)
-    const router = useRouter();
+    const { teams, loading, error, JoinRequests, members } = useAppSelector((state: RootState) => state.teamLeadReducer);
+    const [openModal, setOpenModal] = useState(false)
+    const [openJoinModal, setJoinOpenModal] = useState(false)
+    const [selectedTeam, setSelectedTeam] = useState<any>(null)
+    const router = useRouter()
 
     const handleOpenRequests = () => {
-        setOpenModal(true)
+        setJoinOpenModal(true)
     }
 
     const {
@@ -37,6 +37,7 @@ export default function TeamPage() {
     useEffect(() => {
         dispatch(getTeams())
         dispatch(getJoinRequests())
+        dispatch(getMembersByTeam())
     }, [dispatch])
 
     const onSubmit = async (data: CreateTeamSchemaType) => {
@@ -49,6 +50,14 @@ export default function TeamPage() {
             enqueueSnackbar(err || "Something went wrong", { variant: "error" })
         }
     }
+
+    const membersByTeam = members.reduce((acc: any, member: any) => {
+        if (!acc[member.team_uuid]) {
+            acc[member.team_uuid] = []
+        }
+        acc[member.team_uuid].push(member)
+        return acc
+    }, {})
 
     const handleDelete = async (uuid: string) => {
         try {
@@ -126,16 +135,18 @@ export default function TeamPage() {
                                     {new Date(team.created_at).toLocaleString()}
                                 </Typography>
 
-                                <Button
-                                    onClick={() => router.push(`/lead/team/${team.uuid}`)}
-                                >
+                                <Button onClick={() => {
+                                    setSelectedTeam(team)
+                                    setOpenModal(true)
+                                }}>
+                                    View Members
+                                </Button>
+
+                                <Button onClick={() => router.push(`/lead/team/${team.uuid}`)}>
                                     View Team
                                 </Button>
 
-                                <Button
-                                    color="error"
-                                    onClick={() => handleDelete(team.uuid)}
-                                >
+                                <Button color="error" onClick={() => handleDelete(team.uuid)}>
                                     Delete
                                 </Button>
                             </Box>
@@ -144,7 +155,8 @@ export default function TeamPage() {
                         <Typography>No teams found</Typography>
                     )}
                 </Box>
-                <Modal open={openModal} onClose={() => setOpenModal(false)} className={styles.modal}>
+
+                <Modal open={openJoinModal} onClose={() => setJoinOpenModal(false)} className={styles.modal}>
                     <Box className={styles.modalBox}>
                         <Typography variant="h6">Join Requests</Typography>
 
@@ -172,7 +184,6 @@ export default function TeamPage() {
                                         {new Date(req.created_at).toLocaleString()}
                                     </Typography>
 
-
                                     <Box className={styles.requestActions}>
                                         <Button onClick={() => handleApprovalRequest(req.uuid, true)}>
                                             Approve
@@ -184,6 +195,30 @@ export default function TeamPage() {
                                     </Box>
                                 </Box>
                             ))
+                        )}
+                    </Box>
+                </Modal>
+
+                <Modal open={openModal} onClose={() => setOpenModal(false)} className={styles.modal}>
+                    <Box className={styles.modalBox}>
+                        <Typography variant="h6">
+                            {selectedTeam?.team_name} Members
+                        </Typography>
+
+                        {membersByTeam[selectedTeam?.uuid]?.length > 0 ? (
+                            membersByTeam[selectedTeam.uuid].map((member: any) => (
+                                <Box key={member.uuid} sx={{ mt: 2, p: 1, border: "1px solid #ccc" }}>
+                                    <Typography>
+                                        {member.user.username}
+                                    </Typography>
+
+                                    <Typography variant="body2">
+                                        {member.user.email}
+                                    </Typography>
+                                </Box>
+                            ))
+                        ) : (
+                            <Typography>No members found</Typography>
                         )}
                     </Box>
                 </Modal>
