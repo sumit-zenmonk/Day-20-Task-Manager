@@ -1,17 +1,19 @@
 "use client"
 
 import { createSlice } from "@reduxjs/toolkit"
-import { TeamLeadState } from "./teamLeadType"
+import { TaskStatus, TeamLeadState } from "./teamLeadType"
 import {
     createProject,
     createTask,
     createTeam,
     deleteTeam,
+    getAllTasks,
     getJoinRequests,
     getMembersByTeam,
     getProjectsByTeam,
     getTeams,
-    handleJoinRequest
+    handleJoinRequest,
+    updateTaskStatus
 } from "./teamLeadAction"
 
 const initialState: TeamLeadState = {
@@ -59,7 +61,7 @@ const teamLeadSlice = createSlice({
                 state.teams = state.teams.filter(
                     (team: any) => team.uuid !== action.payload
                 )
-                state.error=null
+                state.error = null
             })
             .addCase(getJoinRequests.pending, (state) => {
                 state.loading = true
@@ -67,7 +69,7 @@ const teamLeadSlice = createSlice({
             .addCase(getJoinRequests.fulfilled, (state, action) => {
                 state.loading = false
                 state.JoinRequests = action.payload
-                state.error=null
+                state.error = null
             })
             .addCase(getJoinRequests.rejected, (state, action) => {
                 state.loading = false
@@ -77,7 +79,7 @@ const teamLeadSlice = createSlice({
                 state.JoinRequests = state.JoinRequests.filter(
                     (req) => req.uuid !== action.payload
                 )
-                state.error=null;
+                state.error = null;
             })
             .addCase(createProject.fulfilled, (state, action) => {
                 state.projects.push(action.payload)
@@ -108,6 +110,26 @@ const teamLeadSlice = createSlice({
                 state.error = null
             })
             .addCase(createTask.rejected, (state, action) => {
+                state.error = action.payload as string
+            })
+            .addCase(getAllTasks.fulfilled, (state, action) => {
+                state.tasks = action.payload
+                state.error = null
+            })
+            .addCase(getAllTasks.rejected, (state, action) => {
+                state.error = action.payload as string
+            })
+            .addCase(updateTaskStatus.fulfilled, (state, action) => {
+                const { status, task_uuid } = action.meta.arg;
+
+                const task = state.tasks.find((t) => t.uuid === task_uuid)
+                if (task) {
+                    task.task_status = status as TaskStatus
+                }
+
+                state.error = null
+            })
+            .addCase(updateTaskStatus.rejected, (state, action) => {
                 state.error = action.payload as string
             })
     }

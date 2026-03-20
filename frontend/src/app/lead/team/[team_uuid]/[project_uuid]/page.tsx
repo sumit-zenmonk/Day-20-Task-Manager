@@ -10,7 +10,8 @@ import { taskSchema, TaskSchemaType } from "@/types/taskCreate"
 import {
     createTask,
     getProjectsByTeam,
-    getMembersByTeam
+    getMembersByTeam,
+    updateTaskStatus
 } from "@/redux/feature/teamlead/teamLeadAction"
 import { RootState } from "@/redux/store"
 import { useAppDispatch, useAppSelector } from "@/redux/hooks.ts"
@@ -22,10 +23,7 @@ export default function TaskPage() {
     const project_uuid = params?.project_uuid as string
     const team_uuid = params?.team_uuid as string
 
-    const { error, members, tasks } = useAppSelector(
-        (state: RootState) => state.teamLeadReducer
-    )
-
+    const { error, members, tasks } = useAppSelector((state: RootState) => state.teamLeadReducer)
     const {
         register,
         handleSubmit,
@@ -62,12 +60,13 @@ export default function TaskPage() {
         }
     }
 
-    const handleStatusChange = (taskId: string, newStatus: string) => {
-        enqueueSnackbar(taskId + newStatus)
-        console.log(taskId, newStatus)
+    const handleStatusChange = async (task_uuid: string, status: string) => {
+        try {
+            await dispatch(updateTaskStatus({ task_uuid, status })).unwrap();
+        } catch (error) {
+            enqueueSnackbar("Some Error Occured", { variant: "error" })
+        }
     }
-
-    console.log(tasks);
 
     return (
         <Box className={styles.container}>
@@ -104,7 +103,7 @@ export default function TaskPage() {
                             .map((member: any) => (
                                 <MenuItem
                                     key={member.uuid}
-                                    value={member.user_uuid}
+                                    value={member.user?.uuid}
                                 >
                                     {member.user?.username ||
                                         member.user?.email}

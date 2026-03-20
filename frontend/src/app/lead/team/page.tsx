@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react"
 import { Box, TextField, Button, Typography, Modal } from "@mui/material"
 import styles from "./team.module.css"
 import { RootState } from "@/redux/store"
-import { createTeam, deleteTeam, getJoinRequests, getMembersByTeam, getTeams, handleJoinRequest } from "@/redux/feature/teamlead/teamLeadAction"
+import { createTeam, deleteTeam, getAllTasks, getJoinRequests, getMembersByTeam, getTeams, handleJoinRequest } from "@/redux/feature/teamlead/teamLeadAction"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { enqueueSnackbar } from "notistack"
@@ -38,6 +38,7 @@ export default function TeamPage() {
         dispatch(getTeams())
         dispatch(getJoinRequests())
         dispatch(getMembersByTeam())
+        dispatch(getAllTasks())
     }, [dispatch])
 
     const onSubmit = async (data: CreateTeamSchemaType) => {

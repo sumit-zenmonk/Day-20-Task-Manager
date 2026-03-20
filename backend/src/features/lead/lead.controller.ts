@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Post, Query, Req, UseGuards } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Patch, Post, Query, Req, UseGuards } from "@nestjs/common";
 import { LeadService } from "./lead.service";
 import type { Request } from "express";
 import { Roles } from "src/infrastructure/guard/role/role.decorator";
@@ -9,6 +9,7 @@ import { TeamDeleteDto } from "./dto/team.delete.dto";
 import { TeamRequestStatusChangeDto } from "./dto/team.request.change.dto";
 import { ProjectCreateDto } from "./dto/project.create.dto";
 import { TaskCreateDto } from "./dto/task.create.dto";
+import { TaskUpdateStatusDto } from "./dto/task.update.dto";
 
 @UseGuards(RolesGuard)
 @Roles(RoleEnum.TEAM_LEAD)
@@ -59,5 +60,15 @@ export class LeadController {
     @Post('/task')
     async createTasks(@Body() body: TaskCreateDto, @Req() req: Request) {
         return await this.leadService.CreateTask(body, req.user);
+    }
+
+    @Get('/task')
+    async getAllTasks(@Req() req: Request) {
+        return await this.leadService.getAllTasks(req.user);
+    }
+
+    @Patch('/task')
+    async updateTasks(@Body() body: TaskUpdateStatusDto, @Req() req: Request) {
+        return await this.leadService.updateTasks(body, req.user);
     }
 }

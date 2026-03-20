@@ -1,5 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { TaskEntity } from "src/domain/entities/task.entity";
+import { TaskStatusEnum } from "src/domain/enums/task";
+import { RoleEnum } from "src/domain/enums/user";
 import { TaskCreateDto } from "src/features/lead/dto/task.create.dto";
 import { DataSource, Repository } from "typeorm";
 
@@ -17,7 +19,7 @@ export class TaskRepository extends Repository<TaskEntity> {
         return await this.save(task);
     }
 
-    async findTask(task_name: string, project_uuid: string, assigned_to: string) {
+    async findTaskBYDetails(task_name: string, project_uuid: string, assigned_to: string) {
         return await this.findOne({
             where: {
                 assigned_to,
@@ -26,4 +28,36 @@ export class TaskRepository extends Repository<TaskEntity> {
             }
         });
     }
+
+    async findTaskBYUUID(task_uuid: string) {
+        return await this.findOne({
+            where: {
+                uuid: task_uuid
+            }
+        });
+    }
+
+    async updateTaskStatus(task_uuid: string, status: TaskStatusEnum) {
+        return await this.update(
+            {
+                uuid: task_uuid
+            },
+            {
+                task_status: status
+            }
+        );
+    }
+
+    async getAllTasks(creator_uuid: string) {
+        return await this.find({
+            where: {
+                project: {
+                    team: {
+                        creator_id: creator_uuid
+                    }
+                }
+            }
+        });
+    }
+
 } 

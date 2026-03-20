@@ -11,6 +11,7 @@ import { ProjectCreateDto } from "./dto/project.create.dto";
 import { ProjectRepository } from "src/infrastructure/repository/project.repo";
 import { TaskCreateDto } from "./dto/task.create.dto";
 import { TaskRepository } from "src/infrastructure/repository/task.repo";
+import { TaskUpdateStatusDto } from "./dto/task.update.dto";
 
 @Injectable()
 export class LeadService {
@@ -112,7 +113,7 @@ export class LeadService {
     }
 
     async CreateTask(body: TaskCreateDto, user: UserEntity) {
-        const isExists = await this.taskRepo.findTask(body.task_name, body.project_uuid, body.assigned_to);
+        const isExists = await this.taskRepo.findTaskBYDetails(body.task_name, body.project_uuid, body.assigned_to);
         if (isExists) {
             throw new BadRequestException("Already same name task assigned to assignee");
         }
@@ -123,5 +124,21 @@ export class LeadService {
             data: task,
             message: "Project Task Created Success"
         };
+    }
+
+    async updateTasks(body: TaskUpdateStatusDto, user: UserEntity) {
+        const isExists = await this.taskRepo.findTaskBYUUID(body.task_uuid);
+        if (!isExists) {
+            throw new BadRequestException("Task not found");
+        }
+
+        await this.taskRepo.updateTaskStatus(body.task_uuid, body.status);
+        return {
+            message: "Project Task status updated Success"
+        };
+    }
+
+    async getAllTasks(user: UserEntity) {
+        return await this.taskRepo.getAllTasks(user.uuid);
     }
 } 

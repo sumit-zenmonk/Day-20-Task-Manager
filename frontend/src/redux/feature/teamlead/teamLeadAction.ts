@@ -270,3 +270,61 @@ export const createTask = createAsyncThunk<
         }
     }
 )
+
+export const getAllTasks = createAsyncThunk<
+    any,
+    void,
+    { state: RootState }
+>(
+    "teamlead/getAllTasks",
+    async (data, { getState, rejectWithValue }) => {
+        try {
+            const token = getState().authReducer.token || ""
+
+            const res = await fetch(`${API_URL}/lead/task`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: token
+                },
+                body: JSON.stringify(data)
+            })
+
+            const result = await res.json()
+            if (!res.ok) throw new Error(result.message)
+
+            return result
+        } catch (err: any) {
+            return rejectWithValue(err.message)
+        }
+    }
+)
+
+export const updateTaskStatus = createAsyncThunk<
+    any,
+    { task_uuid: string; status: string; },
+    { state: RootState }
+>(
+    "teamlead/updateTaskStatus",
+    async (data, { getState, rejectWithValue }) => {
+        try {
+            const token = getState().authReducer.token || ""
+
+            const res = await fetch(`${API_URL}/lead/task`, {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: token
+                },
+                body: JSON.stringify(data)
+            })
+
+            const result = await res.json()
+            if (!res.ok) throw new Error(result.message)
+
+            return result
+        } catch (err: any) {
+            return rejectWithValue(err.message)
+        }
+    }
+)
