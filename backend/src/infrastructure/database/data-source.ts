@@ -1,5 +1,6 @@
 //Data-Source imports
 import { DataSource, DataSourceOptions } from "typeorm";
+import 'dotenv/config';
 
 //Entities
 import { UserEntity } from "src/domain/entities/user.entity";
@@ -11,12 +12,12 @@ import { TeamRequestEntity } from "src/domain/entities/team.request.entity";
 import { TaskCommentsEntity } from "src/domain/entities/task.comment.entity";
 
 const options: DataSourceOptions = {
-    type: 'postgres',
-    host: '127.0.0.1',
-    port: 5432, //5433
-    username: "postgres",
-    password: "123", //sumit123
-    database: "taskmanager",
+    type: process.env.DB_POSTGRES_TYPE as any,
+    host: process.env.DB_POSTGRES_HOST,
+    port: process.env.DB_POSTGRES_PORT as any,
+    username: process.env.DB_POSTGRES_USERNAME,
+    password: process.env.DB_POSTGRES_PASSWORD,
+    database: process.env.DB_POSTGRES_DATABASE,
     entities: [UserEntity, TeamEntity, TeamMemberEntity, ProjectEntity, TaskEntity, TeamRequestEntity, TaskCommentsEntity],
     synchronize: false,
     migrations: ['dist/infrastructure/database/migrations/*{.ts,.js}'],
